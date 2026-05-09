@@ -1,0 +1,16 @@
+#hondaimage1 {
+  background-image: url(/images/Hondaimages/Honda-front-page-1.jpg);
+  height: 700px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#hondaimage2 {
+  background-image: url(/images/Hondaimages/Honda-front-page-2.jpg);
+  height: 720px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h1 {
+  text-align: center;
+  font-size: xx-large;
+}

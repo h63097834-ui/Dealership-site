@@ -1,0 +1,16 @@
+#suzukiimage1 {
+  background-image: url(/images/Suzukiimages/Suzuki-front-image-1.jpg);
+  height: 700px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#suzukiimage2 {
+  background-image: url(/images/Suzukiimages/Suzuki-front-image-2.jpg);
+  height: 720px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h1 {
+  text-align: center;
+  font-size: xx-large;
+}

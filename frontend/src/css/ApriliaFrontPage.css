@@ -1,0 +1,16 @@
+#apriliaimage1 {
+  background-image: url(/images/Apriliaimages/Aprilia-front-image-1.jpg);
+  height: 820px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#apriliaimage2 {
+  background-image: url(/images/Apriliaimages/Aprilia-front-image-2.jpg);
+  height: 720px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h1 {
+  text-align: center;
+  font-size: xx-large;
+}

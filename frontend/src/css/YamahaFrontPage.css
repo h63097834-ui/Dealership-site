@@ -1,0 +1,16 @@
+#yamahaimage1 {
+  background-image: url(/images/Yamahaimages/Yamaha-front-image-1.jpg);
+  height: 600px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#yamahaimage2 {
+  background-image: url(/images/Yamahaimages/Yamaha-front-image-2.jpg);
+  height: 720px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h1 {
+  text-align: center;
+  font-size: xx-large;
+}
