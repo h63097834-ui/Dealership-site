@@ -12,9 +12,7 @@ const FindBikeRouter = require("../routes/FindBikeRouter.cjs");
 const cors = require("cors");
 const CookieParser = require("cookie-parser");
 const ConnectToUserDB = require("../model/ConnectToUserDB.cjs");
-git remote add origin https://github.com/h63097834-ui/Dealership-site.git
-git branch -M main
-git push -u origin main
+
 ConnectToUserDB();
 
 const App = express();
