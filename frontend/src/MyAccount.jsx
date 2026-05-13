@@ -1,40 +1,85 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthProvider } from "./AccessTokenProvider";
+import { Link, useNavigate } from 'react-router-dom';
+import './css/MyAccount.css'
 
 function MyAccount() {
   const [name, setName] = useState("");
   const [orders, setOrders] = useState([]);
-  const { AccessToken } = useContext(AuthProvider);
+  const [date, setDate] = useState('');
+  const { AccessToken, setAccessToken } = useContext(AuthProvider);
+  const [data, setData] = useState('');
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const GetAccountInformation = async () => {
       try {
         const request = await fetch("http://localhost:3500/myaccount", {
           method: "POST",
+          credentials: 'include',
           headers: {
-            authorization: `Bearer ${AccessToken}`,
-          },
+            'authorization': `Bearer ${AccessToken}`
+          }
         });
+        if (!request.ok) {
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
+        }
         const response = await request.json();
-        setName(response.user.Name);
-        setOrders(response.user.orders);
+        setName(response.name);
+        setOrders(response.orders);
+        setDate(response.date);
       } catch (error) {
         console.error(error);
       }
     };
     GetAccountInformation();
   }, []);
+
+  const Submit = async () => {
+    try {
+      const request = await fetch('http://localhost:3500/myaccount/logout', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'authorization': `Bearer ${AccessToken}`
+        }
+      });
+      if (!request.ok) {
+        setError('Could not fetch Account information. Please Login first. Taking to Login page');
+        return;
+      }
+      setData('Logging Out please wait ............');
+      setAccessToken(null);
+      setTimeout(() => {
+        navigate('/login'), 2000;
+      })
+    }
+    catch (error) {
+      setError('Could Not Logout. Please try again later');
+      console.log(error);
+    }
+  }
   return (
     <div>
-      <h2>Name: {name}</h2>
-      <h2>
-        Orders Placed :{" "}
-        {orders.length > 0 ? (
-          <p>Total Orders placed so far {orders.length}</p>
-        ) : (
-          "No Orders Olaced so far"
-        )}
-      </h2>
+      <div id="myaccount-card">
+        <h2>Account Information</h2>
+        <p>Name: {name}</p>
+        <p>
+          Orders Placed: {orders.length}
+        </p>
+        <p>Account was created on: {date}</p>
+        <button className="button" onClick={Submit}>Logout</button><br />
+        <Link to='/myaccount/deleteaccount'>
+          <button className="button">Delete my Account</button>
+        </Link>
+      </div>
+      <div>
+        {data.length > 0 && <p>{data}</p>}
+        {error.length > 0 && <p>{error}</p>}
+      </div>
     </div>
   );
 }

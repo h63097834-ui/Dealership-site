@@ -78,7 +78,7 @@ function SuzukiFrontPage() {
       {bikes.length > 0 &&
         bikes.map((data, index) => {
           return (
-            <Link key={index} to={`bikedetails/${Company}/${data.Name}`}>
+            <Link key={index} to={`/bikedetails/${Company}/${data.Name}`}>
               <div className="bike-card">
                 <p className="bike-name">Name: {data.Name}</p>
               </div>

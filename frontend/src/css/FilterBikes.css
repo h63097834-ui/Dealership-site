@@ -4,16 +4,17 @@
   width: 350px;
   height: 400px;
   text-align: center;
-  border: 3px solid grey;
   border-radius: 10px;
   margin-left: 420px;
   padding-bottom: 5px;
   margin-top: 10px;
   border: 40px solid rgba(128, 83, 45);
 }
+
 .label {
   font-size: xx-large;
 }
+
 #submit {
   background-color: rgba(165, 42, 42, 0.548);
   color: white;
@@ -24,21 +25,25 @@
   border-radius: 6px;
   font-size: large;
 }
+
 #submit:hover {
   border: 4px solid grey;
   box-shadow:
     5px 5px 15px black,
     -10px -10px 15px black;
 }
+
 .data {
   margin-top: 25px;
 }
+
 .bike-card {
   height: 250px;
   width: 300px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 .bike-card-name {
   font-style: italic;
   font-size: larger;

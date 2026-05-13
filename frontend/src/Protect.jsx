@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { AuthProvider } from "./AccessTokenProvider";
 
 function Protect({ children }) {
-  console.log("protect ran");
   const { AccessToken, setAccessToken } = useContext(AuthProvider);
   const [next, setNext] = useState(false);
   const navigate = useNavigate();
@@ -19,12 +18,14 @@ function Protect({ children }) {
           method: "POST",
           credentials: "include",
         });
-        if (!request.ok) navigate("/signup");
-        else {
-          const response = await request.json();
-          setAccessToken(response.AccessToken);
-          setNext(true);
+        if (!request.ok) {
+          console.log('if executed in protect')
+          navigate('/signup');
         }
+        const response = await request.json();
+        setAccessToken(response.AccessToken);
+        setNext(true);
+        console.log('if not executed in protect')
       } catch (error) {
         console.log(error);
       }

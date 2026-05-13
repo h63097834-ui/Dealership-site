@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./css/SignUp.css";
 
 function SignUp() {
-  const [name, setName] = useState("");
+  const [Name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -32,7 +32,7 @@ function SignUp() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
+          Name,
           age,
           password,
         }),

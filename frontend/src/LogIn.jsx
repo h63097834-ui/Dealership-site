@@ -4,7 +4,7 @@ import "./css/LogIn.css";
 import { Link } from "react-router";
 
 function LogIn() {
-  const [name, setName] = useState("");
+  const [Name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [data, setData] = useState("");
@@ -27,7 +27,7 @@ function LogIn() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
+          Name,
           password,
         }),
       });
@@ -41,7 +41,6 @@ function LogIn() {
       const response = await request.json();
       setData(response.message);
       setAccessToken(response.AccessToken);
-      console.log(response.AccessToken);
     } catch (error) {
       console.error(error);
     }

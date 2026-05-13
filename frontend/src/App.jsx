@@ -9,6 +9,9 @@ import SignUp from "./SignUp";
 import LogIn from "./LogIn";
 import Protect from "./Protect";
 import MyAccount from "./MyAccount";
+import SeeMyOrders from "./SeeMyOrders";
+import DeleteAccount from "./DeleteAccount";
+import BikeDetails from "./BikeDetails";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -23,6 +26,7 @@ function App() {
       <Route path="/findbike" element={<FindBike />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<LogIn />} />
+      <Route path="/bikedetails" element={<BikeDetails />} />
       <Route
         path="/myaccount"
         element={
@@ -31,6 +35,15 @@ function App() {
           </Protect>
         }
       />
+      <Route
+        path="/myaccount/deleteaccount"
+        element={
+          <Protect>
+            <DeleteAccount />
+          </Protect>
+        }
+      />
+      <Route path="/seemyorders" element={<Protect><SeeMyOrders /></Protect>} />
     </Routes>
   );
 }
