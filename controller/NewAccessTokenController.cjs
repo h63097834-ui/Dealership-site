@@ -12,7 +12,7 @@ async function NewAccessToken(req, res) {
         if (error) return res.sendStatus(403);
 
         const AccessToken = jwt.sign(
-          { Name: decpoded.name },
+          { Name: decpoded.Name },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: "60s" },
         );

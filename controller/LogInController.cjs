@@ -4,25 +4,25 @@ const UserSchema = require("../model/UserSchema.cjs");
 
 async function LogInController(req, res) {
   try {
-    const { name, password } = req.body;
-    if (!name || !password)
+    const { Name, password } = req.body;
+    if (!Name || !password)
       return res
         .status(400)
         .json({ message: "All fields are required for Logging In" });
 
-    const FindUser = await UserSchema.findOne({ Name: name });
-    if (!FindUser) return res.json({ message: `Username ${name} not found` });
+    const FindUser = await UserSchema.findOne({ Name: Name });
+    if (!FindUser) return res.json({ message: `Username ${Name} not found` });
 
     const CheckPassword = await bcrypt.compare(password, FindUser.Password);
     if (!CheckPassword) return res.json({ message: "Invalid Password" });
 
     const AccessToken = jwt.sign(
-      { Name: name },
+      { Name: Name },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "60s" },
     );
     const RefreshToken = jwt.sign(
-      { Name: name },
+      { Name: Name },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "5m" },
     );

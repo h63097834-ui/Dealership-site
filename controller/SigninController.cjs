@@ -4,8 +4,8 @@ const User = require("../model/UserSchema.cjs");
 
 async function SingUp(req, res) {
   try {
-    const { name, age, password } = req.body;
-    if (!name || !age || !password)
+    const { Name, age, password } = req.body;
+    if (!Name || !age || !password)
       return res.json({
         message: "All fields are required for Creating Account",
       });
@@ -18,25 +18,26 @@ async function SingUp(req, res) {
         message: "Password must be atleast 6 Characters Long",
       });
 
-    const checkDuplicate = await User.findOne({ Name: name });
+    const checkDuplicate = await User.findOne({ Name: Name });
     if (checkDuplicate)
-      return res.json({ message: `Username ${name} already exists` });
+      return res.json({ message: `Username ${Name} already exists` });
 
     const HashedPassword = await bcrypt.hash(password, 10);
     const NewUser = new User({
-      Name: name,
+      Name: Name,
       Age: age,
       Password: HashedPassword,
+      AccountCreatedAt: new Date().toLocaleDateString(),
     });
     await NewUser.save();
 
     const AccessToken = jwt.sign(
-      { Name: name },
+      { Name: Name },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "60s" },
     );
     const RefreshToken = jwt.sign(
-      { Name: name },
+      { Name: Name },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "5m" },
     );
@@ -46,7 +47,7 @@ async function SingUp(req, res) {
       maxAge: 5 * 60 * 1000,
     });
     return res.json({
-      message: `Account for ${name} created successfully`,
+      message: `Account for ${Name} created successfully`,
       AccessToken,
     });
   } catch (error) {
