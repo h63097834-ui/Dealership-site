@@ -12,6 +12,7 @@ import MyAccount from "./MyAccount";
 import SeeMyOrders from "./SeeMyOrders";
 import DeleteAccount from "./DeleteAccount";
 import BikeDetails from "./BikeDetails";
+import PurchaseBike from "./PurchaseBike";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         }
       />
       <Route path="/seemyorders" element={<Protect><SeeMyOrders /></Protect>} />
+      <Route path="/purchasebike/:companyName/:bikeName" element={<Protect><PurchaseBike /></Protect>} />
     </Routes>
   );
 }

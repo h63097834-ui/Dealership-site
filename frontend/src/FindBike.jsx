@@ -86,7 +86,7 @@ function FindBike() {
           <p>Company: {bike.Company}</p>
           <p>Name: {bike.Name}</p>
           {bike.UnitsAvailable > 0 ? (
-            <Link to="/purchasebike">
+            <Link to={`/purchasebike/${companyName}/${bikeName}`}>
               <p>Bike is in Stock. Click to Purchase</p>
             </Link>
           ) : (
