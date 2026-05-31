@@ -27,13 +27,17 @@ async function Logout(req, res) {
 }
 
 async function DeleteAccount(req, res) {
-  const { name, password } = req.body;
+  const { name, password, confirmPassword } = req.body;
 
-  if (!name || !password)
+  if (!name || !password || !confirmPassword)
     return res.json({ message: 'All fields are required for Deleting Account' });
+
   const FindUser = await User.findOne({ Name: name });
   if (!FindUser)
     return res.json({ message: 'User not found' });
+  else if (password !== confirmPassword)
+    return res.json({ message: 'Invalid password writtwen while confirming' });
+
   const checkPassword = bcrypt.compare(password, FindUser.Password);
   if (!checkPassword)
     return res.json({ message: "Invalid password" });
@@ -44,6 +48,8 @@ async function DeleteAccount(req, res) {
   await User.findByIdAndDelete(FindUser._id);
   return res.json({ message: 'Account deleted successfully' });
 }
+
+
 async function SeeMyOrders(req, res) {
   try {
     const FindUser = await User.findOne({ Name: req.user.Name });
