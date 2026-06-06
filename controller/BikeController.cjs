@@ -1,3 +1,7 @@
+const path = require("path");
+require("dotenv").config({
+  path: path.resolve(__dirname, ".env"),
+});
 const express = require("express");
 const Bike = require("../model/BikeSchema.cjs");
 const User = require('../model/UserSchema.cjs');
@@ -12,6 +16,8 @@ async function FetchBikes(req, res) {
       return res.json({ message: "Please select company first", Bikes: [] });
     }
     const Bikes = await Bike.find({ Company: Company });
+    if (!Bikes)
+      return res.json({ message: "Company not found !" });
     res.json({ Bikes: Bikes, message: "" });
   } catch (error) {
     console.error(error);
@@ -58,11 +64,52 @@ async function BikeDetails(req, res) {
 async function PurchaseBike(req, res) {
   const session = await mongoose.startSession();
   try {
-    console.log('hit purchase');
 
     const name = req.user.name;
     const { companyName, bikeName, password, city, contactNumber } = req.body;
+
+    const citiesAuthorizedForShipping = JSON.parse(process.env.CITIES ?? '[]');
+
+    let isValidCity = false;
+    for (const x of citiesAuthorizedForShipping) {
+      if (x === city.toLowerCase()) {
+        isValidCity = true;
+        break;
+      }
+    }
+    if (!isValidCity) {
+      return res.json({ message: `Were sorry but we do not ship to ${city}` });
+    }
+
     const FindBike = await Bike.findOne({ Company: companyName, Name: bikeName });
+    if (!FindBike) {
+      return res.json({ message: `Bike not found` });
+    }
+    if (!bike) {
+      mongoose.abortTransaction();
+      return res.json({ message: 'Bike not found' });
+    }
+    const FindUser = await User.findOne({ Name: name }, null, { session });
+    if (!FindUser) {
+      mongoose.abortTransaction();
+      return res.json({ message: `Username not found` });
+    }
+    const checkPassword = await bcrypt.compare(password, FindUser.Password);
+    if (!checkPassword) {
+      mongoose.abortTransaction();
+      return res.json({ message: 'Invalid password. Could not place order' });
+    }
+    if (FindUser.Orders.length === 3) {
+      mongoose.abortTransaction();
+      return res.json({ message: 'Were sorry but u already have maximum order limits at a time (3) pending' });
+    }
+
+    if (contactNumber.length !== 11)
+    //since a contact number in pakistan is 11 digits
+    {
+      mongoose.abortTransaction();
+      return res.json({ message: 'Please enter valid contact number' });
+    }
 
     session.startTransaction();
 
@@ -79,21 +126,6 @@ async function PurchaseBike(req, res) {
         session,
       },
     );
-    if (!bike)
-      return res.json({ message: 'Bike not found' });
-    const FindUser = await User.findOne({ Name: name }, null, { session });
-    if (!FindUser)
-      return res.json({ message: `Username not found` });
-    const checkPassword = await bcrypt.compare(password, FindUser.Password);
-    if (!checkPassword)
-      return res.json({ message: 'Invalid password. Could not place order' });
-    if (FindUser.Orders.length === 3)
-      return res.json({ message: 'Were sorry but u already have maximux order limits at a time (3) pending' });
-
-    if (contactNumber.length !== 11)
-      //since a contact number in pakistan is 11 digits
-      return res.json({ message: 'Please enter valid contact number' });
-
     const NewOrder = new Order({
       BikeName: bikeName,
       CompanyName: companyName,
